@@ -92,6 +92,14 @@
             value: false
           },
           /**
+           * Time to spread
+           */
+          timeToSpread: {
+            type: Number,
+            reflectToAttribute: true,
+            value: 60
+          },
+          /**
            * Element visibility
            */
           counter: {
@@ -188,7 +196,7 @@
         this.timeout = setTimeout(() => {
           this.animationFrame = window.requestAnimationFrame(this._boundAnimate)
           this._moveBubbles()
-        }, 1000/60)
+        }, this.timeToSpread/60)
       }
       /**
        * Move bubbles on canvas
@@ -214,10 +222,18 @@
           corner = this._corners[i % 4]
           if (this.spread) {
             if (this.bubbles[i].x !== corner.x) {
-              this.bubbles[i].x = this.bubbles[i].x > corner.x ? this.bubbles[i].x -= 1 : this.bubbles[i].x += 1
+              if (this.bubbles[i].x > corner.x) {
+                this.bubbles[i].x -= (this.bubbles[i].x - corner.x) / this.timeToSpread
+              } else {
+                this.bubbles[i].x += (corner.x - this.bubbles[i].x) / this.timeToSpread
+              }
             }
             if (this.bubbles[i].y !== corner.y) {
-              this.bubbles[i].y = this.bubbles[i].y > corner.y ? this.bubbles[i].y -= 1 : this.bubbles[i].y += 1
+              if (this.bubbles[i].y > corner.y) {
+                this.bubbles[i].y -= (this.bubbles[i].y - corner.y) / this.timeToSpread
+              } else {
+                this.bubbles[i].y += (corner.y - this.bubbles[i].y) / this.timeToSpread
+              }
             }
           }
           // save context
