@@ -168,7 +168,7 @@
         this.lineWidth = 3
         this.context.lineWidth = this.lineWidth
         // fill bubbles array
-        let d, t, x, y, r, s, l1, l2, v, vr, pad = 0, dMax = 0,
+        let d, t, x, y, r, s, l1, l2, v, vr, pad = 0, dMax = 0, ox, oy,
             p = this.canvasPadding + this.lineWidth,
             rotateDirs = ['foreword','backward'], ls = false
         for (let i = 0; i < this.counter; i++) {
@@ -177,13 +177,15 @@
           t = (2*d+p)*1.1
           x = Math.floor(Math.random()*(this.w-t)+t)
           y = Math.floor(Math.random()*(this.h-t)+t)
+          ox = x // save original x
+          oy = y // save original y
           r = Math.floor(Math.random()*220+1) // initial rotation
           s = d/10 // max scale expansion
           l2 = (d-s) <= 0 ? 0 : (d-s)// limit min diameter
           l1 = d+s // limit max diameter
           v = 'out' // out || in - expansion versus
           vr = rotateDirs[Math.round(Math.random())] // rotate versus
-          this.bubbles.push({x, y, d, r, v, vr, l1, l2, ls})
+          this.bubbles.push({x, y, d, r, v, vr, l1, l2, ls, ox, oy})
         }
         // define corser coords
         pad = Math.floor(dMax + p)
@@ -245,6 +247,9 @@
           if (this.spread) {
             this.bubbles[i].x = pos(this.bubbles[i].x, corner.x)
             this.bubbles[i].y = pos(this.bubbles[i].y, corner.y)
+          } else {
+            this.bubbles[i].x = pos(this.bubbles[i].x, this.bubbles[i].ox)
+            this.bubbles[i].y = pos(this.bubbles[i].y, this.bubbles[i].oy)
           }
           // save context
           this.context.save()
@@ -311,6 +316,18 @@
        * Hide
        */
       hide() { this.visible = false }
+      /**
+       * Toggle bubbles spread
+       */
+      togglePosition() { this.spread = !this.spread }
+      /**
+       * Send bubbles to corners
+       */
+      toCorners() { this.spread = true }
+      /**
+       * Send bubbles back to origins
+       */
+      backIn() { this.spread = false }
     }
 
     window.customElements.define(OceanEyeBubble.is, OceanEyeBubble);
