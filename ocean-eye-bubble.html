@@ -179,6 +179,8 @@
        */
       _moveBubbles() {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
+        this.context.fillStyle = this.color
+        this.context.strokeStyle = this.color
         let x, y, z = 1, s, r, p = 0.1
         for (let i = 0; i < this.bubbles.length; i++) {
           x = Math.floor(Math.random()*z)-z
