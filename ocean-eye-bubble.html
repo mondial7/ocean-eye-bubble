@@ -207,6 +207,17 @@
         this.context.fillStyle = this.color
         this.context.strokeStyle = this.color
         let x, y, s, r, p = 0.1, corner
+        /**
+         * @param Int single coord of bubble
+         * @param Int single coord of corner targeted
+         */
+        let pos = (from, to) => {
+          if (from !== to) {
+            return (from > to) ? from - ((from - to) / this.timeToSpread)
+                               : from + ((to - from) / this.timeToSpread)
+          }
+          return from
+        }
         for (let i = 0; i < this.bubbles.length; i++) {
           // redefine bubble diameter (scaling)
           if (this.bubbles[i].v === 'out') {
@@ -221,20 +232,8 @@
           // reposition bubble center according to spread
           corner = this._corners[i % 4]
           if (this.spread) {
-            if (this.bubbles[i].x !== corner.x) {
-              if (this.bubbles[i].x > corner.x) {
-                this.bubbles[i].x -= (this.bubbles[i].x - corner.x) / this.timeToSpread
-              } else {
-                this.bubbles[i].x += (corner.x - this.bubbles[i].x) / this.timeToSpread
-              }
-            }
-            if (this.bubbles[i].y !== corner.y) {
-              if (this.bubbles[i].y > corner.y) {
-                this.bubbles[i].y -= (this.bubbles[i].y - corner.y) / this.timeToSpread
-              } else {
-                this.bubbles[i].y += (corner.y - this.bubbles[i].y) / this.timeToSpread
-              }
-            }
+            this.bubbles[i].x = pos(this.bubbles[i].x, corner.x)
+            this.bubbles[i].y = pos(this.bubbles[i].y, corner.y)
           }
           // save context
           this.context.save()
@@ -272,13 +271,19 @@
        * Redefine bubbles, canvas and restart
        */
       rebubble() {
-        // stop animation
-        clearTimeout(this.timeout)
-        window.cancelAnimationFrame(this.animationFrame)
-        // reset bubbles
-        this.bubbles = []
-        // restart
-        this._load()
+        // fade out canvas
+        this.canvas.setAttribute('style','opacity:0')
+        setTimeout(() => {
+          // stop animation
+          clearTimeout(this.timeout)
+          window.cancelAnimationFrame(this.animationFrame)
+          // reset bubbles
+          this.bubbles = []
+          // restart
+          this._load()
+          // fade in canvas
+          setTimeout(() => { this.canvas.removeAttribute('style') }, 300)
+        }, 300)
       }
       /**
        * Toggle visibility
