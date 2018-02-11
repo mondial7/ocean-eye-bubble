@@ -77,6 +77,8 @@
         return {
           /**
            * Element visibility
+           *
+           * No need for observers, since it's evaluated through css
            */
           visible: {
             type: Boolean,
@@ -85,6 +87,8 @@
           },
           /**
            * Spread
+           *
+           * No need for observers, since it's evaluated at each frame
            */
           spread: {
             type: Boolean,
@@ -93,6 +97,8 @@
           },
           /**
            * Time to spread
+           *
+           * No need for observers, since it's evaluated at each frame
            */
           timeToSpread: {
             type: Number,
@@ -100,15 +106,20 @@
             value: 60
           },
           /**
-           * Element visibility
+           * Element bubbles number counter
+           *
+           * Observer applies rebubble() to the element
            */
           counter: {
             type: Number,
             reflectToAttribute: true,
-            value: 8
+            value: 8,
+            observer: 'rebubble'
           },
           /**
            * Bubbles color
+           *
+           * No need for observers, since it's evaluated at each frame
            */
           color: {
             type: String,
@@ -117,7 +128,7 @@
           },
           /**
            * Bubbles array, filled after element ready
-           * with the position of each bubble and its diameter-span
+           * with and object for each bubble
            */
           bubbles: {
             type: Array,
@@ -155,8 +166,6 @@
         this.context = this.canvas.getContext('2d')
         this.canvasPadding = 10
         this.lineWidth = 3
-        this.context.fillStyle = this.color
-        this.context.strokeStyle = this.color
         this.context.lineWidth = this.lineWidth
         // fill bubbles array
         let d, t, x, y, r, s, l1, l2, v, vr, pad = 0, dMax = 0,
@@ -184,6 +193,8 @@
           { x: this.canvas.width - p, y: this.canvas.height - p },
           { x: pad, y: this.canvas.height - p }
         ]
+        // set loaded
+        this.isLoaded = true
         // trigger canvas animation
         this._animate()
       }
@@ -271,19 +282,22 @@
        * Redefine bubbles, canvas and restart
        */
       rebubble() {
-        // fade out canvas
-        this.canvas.setAttribute('style','opacity:0')
-        setTimeout(() => {
-          // stop animation
-          clearTimeout(this.timeout)
-          window.cancelAnimationFrame(this.animationFrame)
-          // reset bubbles
-          this.bubbles = []
-          // restart
-          this._load()
-          // fade in canvas
-          setTimeout(() => { this.canvas.removeAttribute('style') }, 300)
-        }, 300)
+        // prevent running before _load()
+        if (this.isLoaded) {
+          // fade out canvas
+          this.canvas.setAttribute('style','opacity:0')
+          setTimeout(() => {
+            // stop animation
+            clearTimeout(this.timeout)
+            window.cancelAnimationFrame(this.animationFrame)
+            // reset bubbles
+            this.bubbles = []
+            // restart
+            this._load()
+            // fade in canvas
+            setTimeout(() => { this.canvas.removeAttribute('style') }, 300)
+          }, 300)
+        }
       }
       /**
        * Toggle visibility
