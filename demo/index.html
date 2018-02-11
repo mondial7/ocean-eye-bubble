@@ -22,22 +22,38 @@
       <h3>Basic ocean-eye-bubble demo</h3>
       <demo-snippet>
         <template>
-          <ocean-eye-bubble></ocean-eye-bubble>
+          <ocean-eye-bubble id="bubble1"></ocean-eye-bubble>
+          <div>
+            <button id="toggle">Toggle element</button>
+            <button id="spread">Spread bubbles</button>
+          </div>
+          <script>
+          let bubble = document.getElementById('bubble1')
+          document.getElementById('toggle').onclick = () => {
+            bubble.toggle()
+          }
+          document.getElementById('spread').onclick = () => {
+            bubble.togglePosition()
+          }
+          </script>
         </template>
       </demo-snippet>
       <h3>Choose number of bubbles</h3>
       <demo-snippet>
         <template>
-          <ocean-eye-bubble counter="150"></ocean-eye-bubble>
+          <style>
+          #bubble2 { --bubble-size: 90%; height: 400px; background: skyblue; display: block; margin: 40px auto; }
+          </style>
+          <ocean-eye-bubble id="bubble2" counter="80" color="#f8f8f8"></ocean-eye-bubble>
         </template>
       </demo-snippet>
       <h3>Component sizes of bubble</h3>
       <demo-snippet>
         <template>
           <style>
-          #bubble { --bubble-size: 100%; width: 100%; height: 200px; }
+          #bubble3 { --bubble-size: 100%; width: 100%; height: 200px; }
           </style>
-          <ocean-eye-bubble id="bubble" color="orange"></ocean-eye-bubble>
+          <ocean-eye-bubble id="bubble3" color="orange"></ocean-eye-bubble>
         </template>
       </demo-snippet>
     </div>
