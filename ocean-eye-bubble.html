@@ -84,6 +84,14 @@
             value: true
           },
           /**
+           * Spread
+           */
+          spread: {
+            type: Boolean,
+            reflectToAttribute: true,
+            value: false
+          },
+          /**
            * Element visibility
            */
           counter: {
@@ -143,11 +151,12 @@
         this.context.strokeStyle = this.color
         this.context.lineWidth = this.lineWidth
         // fill bubbles array
-        let d, t, x, y, r, s, l1, l2, v, vr,
+        let d, t, x, y, r, s, l1, l2, v, vr, pad = 0, dMax = 0,
             p = this.canvasPadding + this.lineWidth,
-            rotateDirs = ['foreword','backward']
+            rotateDirs = ['foreword','backward'], ls = false
         for (let i = 0; i < this.counter; i++) {
           d = Math.floor(Math.random()*35+25) // initial diameter
+          dMax = d > dMax ? d : dMax
           t = (2*d+p)*1.1
           x = Math.floor(Math.random()*(this.w-t)+t)
           y = Math.floor(Math.random()*(this.h-t)+t)
@@ -157,8 +166,16 @@
           l1 = d+s // limit max diameter
           v = 'out' // out || in - expansion versus
           vr = rotateDirs[Math.round(Math.random())] // rotate versus
-          this.bubbles.push({x, y, d, r, v, vr, l1, l2})
+          this.bubbles.push({x, y, d, r, v, vr, l1, l2, ls})
         }
+        // define corser coords
+        pad = Math.floor(dMax + p)
+        this._corners = [
+          { x: pad, y: pad },
+          { x: this.canvas.width - p, y: pad },
+          { x: this.canvas.width - p, y: this.canvas.height - p },
+          { x: pad, y: this.canvas.height - p }
+        ]
         // trigger canvas animation
         this._animate()
       }
@@ -181,11 +198,9 @@
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
         this.context.fillStyle = this.color
         this.context.strokeStyle = this.color
-        let x, y, z = 1, s, r, p = 0.1
+        let x, y, s, r, p = 0.1, corner
         for (let i = 0; i < this.bubbles.length; i++) {
-          x = Math.floor(Math.random()*z)-z
-          y = Math.floor(Math.random()*z)-z
-          // define scale (bubble diameter)
+          // redefine bubble diameter (scaling)
           if (this.bubbles[i].v === 'out') {
             if (this.bubbles[i].d < this.bubbles[i].l1) this.bubbles[i].d += p
             else this.bubbles[i].v = 'in'
@@ -195,10 +210,20 @@
           }
           // bubble radius
           r = this.bubbles[i].d/2
+          // reposition bubble center according to spread
+          corner = this._corners[i % 4]
+          if (this.spread) {
+            if (this.bubbles[i].x !== corner.x) {
+              this.bubbles[i].x = this.bubbles[i].x > corner.x ? this.bubbles[i].x -= 1 : this.bubbles[i].x += 1
+            }
+            if (this.bubbles[i].y !== corner.y) {
+              this.bubbles[i].y = this.bubbles[i].y > corner.y ? this.bubbles[i].y -= 1 : this.bubbles[i].y += 1
+            }
+          }
           // save context
           this.context.save()
           // move close to bubble center
-          this.context.translate(this.bubbles[i].x-r+x,this.bubbles[i].y-r+y)
+          this.context.translate(this.bubbles[i].x-r,this.bubbles[i].y-r)
           // rotate
           this.context.rotate(this.bubbles[i].r*Math.PI/180)
           if (this.bubbles[i].vr === 'foreword') {
