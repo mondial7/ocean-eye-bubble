@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>ocean-eye-bubble demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../ocean-eye-bubble.html">
+
+    <custom-style>
+      <style is="custom-style" include="demo-pages-shared-styles">
+      </style>
+    </custom-style>
+  </head>
+  <body>
+    <div class="vertical-section-container centered">
+      <h3>Basic ocean-eye-bubble demo</h3>
+      <demo-snippet>
+        <template>
+          <ocean-eye-bubble></ocean-eye-bubble>
+        </template>
+      </demo-snippet>
+      <h3>Choose number of bubbles</h3>
+      <demo-snippet>
+        <template>
+          <ocean-eye-bubble counter="20"></ocean-eye-bubble>
+        </template>
+      </demo-snippet>
+      <h3>Component sizes of bubble</h3>
+      <demo-snippet>
+        <style>
+        #bubble { --bubble-size: 700px; }
+        </style>
+        <template>
+          <ocean-eye-bubble id="bubble" counter="12"></ocean-eye-bubble>
+        </template>
+      </demo-snippet>
+    </div>
+  </body>
+</html>
