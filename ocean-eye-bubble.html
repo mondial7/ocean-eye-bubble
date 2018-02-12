@@ -174,9 +174,9 @@
         for (let i = 0; i < this.counter; i++) {
           d = Math.floor(Math.random()*35+25) // initial diameter
           dMax = d > dMax ? d : dMax
-          t = (2*d+p)*1.1
-          x = Math.floor(Math.random()*(this.w-t)+t) - d/2
-          y = Math.floor(Math.random()*(this.h-t)+t) - d/2
+          t = (d + p)*1.1
+          x = Math.floor(Math.random()*(this.w-t-p)+t) - d/2
+          y = Math.floor(Math.random()*(this.h-t-p)+t) - d/2
           ox = x // save original x
           oy = y // save original y
           r = Math.floor(Math.random()*220+1) // initial rotation
@@ -188,13 +188,16 @@
           this.bubbles.push({x, y, d, r, v, vr, l1, l2, ls, ox, oy})
         }
         // define corners coords
-        pad = Math.floor(dMax + p)
+        pad = Math.floor(dMax/2 + p)
         this._corners = [
           { x: pad, y: pad },
-          { x: this.canvas.width - p, y: pad },
-          { x: this.canvas.width - p, y: this.canvas.height - p },
-          { x: pad, y: this.canvas.height - p },
-          { x: this.canvas.width/2, y: this.canvas.height/2 }
+          { x: this.canvas.width - pad, y: pad },
+          { x: this.canvas.width - pad, y: this.canvas.height - pad },
+          { x: pad, y: this.canvas.height - pad },
+          { x: pad, y: this.canvas.height/2 },
+          { x: this.canvas.width/2, y: pad },
+          { x: this.canvas.width - pad, y: this.canvas.height/2 },
+          { x: this.canvas.width/2, y: this.canvas.height - pad },
         ]
         // set loaded
         this.isLoaded = true
@@ -254,8 +257,8 @@
           }
           // save context
           this.context.save()
-          // move close to bubble center
-          this.context.translate(this.bubbles[i].x-r,this.bubbles[i].y-r)
+          // move to bubble center
+          this.context.translate(this.bubbles[i].x,this.bubbles[i].y)
           // rotate
           this.context.rotate(this.bubbles[i].r*Math.PI/180)
           if (this.bubbles[i].vr === 'foreword') {
