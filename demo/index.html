@@ -64,8 +64,16 @@
       <demo-snippet>
         <template>
           <ocean-eye-bubble id="bubble4" color="orange">
-            <h1>87%</h1>
+            <div style="text-align:center;color:#888;font-family:Arial,san-serif;">
+              <h1 style="font-size:45px">87%</h1>
+              <p>Anything you like</p>
+            </div>
           </ocean-eye-bubble>
+          <script>
+          document.getElementById('bubble4').onclick = function(){
+            this.togglePosition()
+          }
+          </script>
         </template>
       </demo-snippet>
     </div>
