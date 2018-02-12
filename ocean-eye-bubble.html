@@ -26,7 +26,8 @@
         width: var(--bubble-aspect, 80%);
         height: var(--bubble-aspect, 80%);
       }
-      :host([visible]) .background > canvas {
+      :host([visible]) .background > canvas,
+      :host([spread]) .content {
         opacity: 1;
       }
       .wrapper,
@@ -41,6 +42,14 @@
         left: 50%;
         transition: all var(--animation-timing, 300ms) ease-in-out;
         transform: translateX(-50%) translateY(-50%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .content {
+        /* flex: 1; */
+        opacity: 0;
+        transition: all var(--animation-timing, 300ms) ease-in-out;
       }
       .background {
         z-index: 1;
@@ -55,7 +64,9 @@
       }
     </style>
     <div class="wrapper">
-      <slot></slot>
+      <div class="content">
+        <slot></slot>
+      </div>
     </div>
     <div class="background">
       <canvas></canvas>
