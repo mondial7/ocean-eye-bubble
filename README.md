@@ -2,20 +2,28 @@
 
 Container of an information item for Startup Radiator dashboard
 
-## Install the Polymer-CLI
+[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/mondial7/ocean-eye-bubble)
 
-First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) installed. Then run `polymer serve` to serve your element locally.
-
-## Viewing Your Element
-
+<!--
 ```
-$ polymer serve
+<custom-element-demo>
+  <template>
+    <link rel="import" href="ocean-eye-bubble.html">
+    <next-code-block></next-code-block>
+  </template>
+</custom-element-demo>
 ```
-
-## Running Tests
-
+-->
+```html
+<ocean-eye-bubble id="bubble" color="orange">
+  <div style="text-align:center;color:#888;font-family:Arial,san-serif;">
+    <h1 style="font-size:45px">87%</h1>
+    <p>Anything you like</p>
+  </div>
+</ocean-eye-bubble>
+<script>
+document.getElementById('bubble').onclick = function(){
+  this.togglePosition()
+}
+</script>
 ```
-$ polymer test
-```
-
-Your application is already set up to be tested via [web-component-tester](https://github.com/Polymer/web-component-tester). Run `polymer test` to run your application's test suite locally.
