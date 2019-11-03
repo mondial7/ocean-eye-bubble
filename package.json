@@ -1,6 +1,6 @@
 {
-  "name": "@polymer/ocean-eye-bubble",
-  "description": "Container of an information item for Startup Radiator dashboard",
+  "name": "ocean-eye-bubble",
+  "description": "Random bubbles wrapper",
   "version": "1.0.0",
   "main": "ocean-eye-bubble.js",
   "scripts": {
@@ -9,6 +9,21 @@
     "demo": "polymer serve",
     "test:chrome": "polymer test -l chrome"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mondial7/ocean-eye-bubble.git"
+  },
+  "keywords": [
+    "bubbles",
+    "webcomponent",
+    "styling"
+  ],
+  "author": "Marco Mondini <mmondini@mondspace.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mondial7/ocean-eye-bubble/issues"
+  },
+  "homepage": "https://github.com/mondial7/ocean-eye-bubble#readme",
   "dependencies": {
     "@polymer/polymer": "^3.0.0"
   },
